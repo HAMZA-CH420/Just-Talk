@@ -13,14 +13,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    var navigate = Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ));
-    Future.delayed(Duration(seconds: 3), () {
-      navigate;
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        var navigate = Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginScreen(),
+            ));
+        Future.delayed(Duration(seconds: 2), () {
+          navigate;
+        });
+      },
+    );
   }
 
   @override
