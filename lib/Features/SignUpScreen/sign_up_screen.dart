@@ -4,19 +4,22 @@ import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/primary_button.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    usernameController.dispose();
     super.dispose();
   }
 
@@ -37,6 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 SvgPicture.asset("assets/logo/just_talk.svg"),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 10,
+                ),
+                CredentialsTextField(
+                  labelText: "Username",
+                  controller: usernameController,
                 ),
                 CredentialsTextField(
                   labelText: "Email Address",
