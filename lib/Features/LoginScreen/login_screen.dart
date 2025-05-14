@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: Scaffold(
-        body: Center(
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SvgPicture.asset("assets/logo/just_talk.svg"),
                 SizedBox(
-                  height: MediaQuery.sizeOf(context).height / 14,
+                  height: MediaQuery.sizeOf(context).height / 10,
                 ),
                 CredentialsTextField(
                   labelText: "Email Address",
