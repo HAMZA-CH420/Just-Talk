@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(milliseconds: 800), () {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

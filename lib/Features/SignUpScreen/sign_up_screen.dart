@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_talk/Features/HomeScreen/home_screen.dart';
 import 'package:just_talk/Features/LoginScreen/login_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
@@ -63,7 +64,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     PrimaryButton(
                       btnName: "SignUp",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen(),
+                            ));
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Text("Already have an account?"),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => LoginScreen(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_talk/Features/HomeScreen/home_screen.dart';
 import 'package:just_talk/Features/SignUpScreen/sign_up_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
@@ -52,7 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 PrimaryButton(
                   btnName: "Login",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ));
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
