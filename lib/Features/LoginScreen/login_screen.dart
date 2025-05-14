@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_talk/Features/SignUpScreen/sign_up_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/primary_button.dart';
@@ -50,17 +51,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 PrimaryButton(
+                  btnName: "Login",
                   onTap: () {},
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don't have an account?"),
-                    Text(
-                      " SignUp",
-                      style: TextStyle(
-                        color: Palette.primaryColor,
-                        fontWeight: FontWeight.w600,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpScreen(),
+                            ));
+                      },
+                      child: Text(
+                        " SignUp",
+                        style: TextStyle(
+                          color: Palette.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
