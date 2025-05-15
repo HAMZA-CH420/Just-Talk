@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:just_talk/Features/HomeScreen/home_screen.dart';
+import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
 import 'package:just_talk/Features/SignUpScreen/sign_up_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => BottomNavBar(),
                         ));
                   },
                 ),
