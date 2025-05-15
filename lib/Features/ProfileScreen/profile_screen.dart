@@ -10,6 +10,7 @@ class ProfileScreen extends StatelessWidget {
         title: Text("ProfileScreen"),
         centerTitle: true,
       ),
+      body: Container(),
     );
   }
 }
