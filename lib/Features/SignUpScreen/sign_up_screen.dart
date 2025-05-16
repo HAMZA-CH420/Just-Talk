@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
-import 'package:just_talk/Features/HomeScreen/home_screen.dart';
+import 'package:just_talk/Features/LoginScreen/login_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/primary_button.dart';
@@ -68,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
+                              builder: (context) => BottomNavBar(),
                             ));
                       },
                     ),
@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BottomNavBar(),
+                                  builder: (context) => LoginScreen(),
                                 ));
                           },
                           child: Text(
