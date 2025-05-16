@@ -25,7 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         children: _pages,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        color: Palette.primaryColor,
+        color: Palette.secondaryColor,
         backgroundColor: Colors.transparent,
         animationDuration: Duration(milliseconds: 400),
         onTap: (value) {
@@ -36,12 +36,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
         items: [
           Icon(
             Icons.home_filled,
-            color: Colors.white,
+            color: Palette.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.person,
-            color: Colors.white,
+            color: Palette.primaryColor,
             size: 30,
           ),
         ],
