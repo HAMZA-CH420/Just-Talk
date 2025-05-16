@@ -10,7 +10,7 @@ class CustomSearchBar extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height / 16,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         color: Palette.secondaryColor,
@@ -19,10 +19,15 @@ class CustomSearchBar extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           border: InputBorder.none,
+          prefixIcon: Icon(
+            Icons.search,
+            color: Palette.primaryColor,
+            size: 27,
+          ),
           hintText: "Search...",
           hintStyle: TextStyle(
             fontSize: 18,
-            color: Colors.black,
+            color: Palette.primaryColor,
           ),
         ),
       ),
