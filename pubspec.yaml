@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^2.1.0
   google_fonts: ^6.2.1
   curved_navigation_bar: ^1.0.6
+  iconsax: ^0.0.8
 
 
 dev_dependencies:
