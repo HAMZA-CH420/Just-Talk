@@ -40,7 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             size: 30,
           ),
           Icon(
-            Icons.settings,
+            Icons.person,
             color: Colors.white,
             size: 30,
           ),
