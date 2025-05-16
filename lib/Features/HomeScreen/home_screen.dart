@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:just_talk/Features/HomeScreen/Widgets/search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -24,7 +25,14 @@ class HomeScreen extends StatelessWidget {
               ))
         ],
       ),
-      body: Container(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Column(
+          children: [
+            CustomSearchBar(),
+          ],
+        ),
+      ),
     );
   }
 }
