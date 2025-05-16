@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
-class CredentialsTextField extends StatelessWidget {
+class CredentialsTextField extends StatefulWidget {
   const CredentialsTextField(
       {super.key,
       required this.labelText,
@@ -12,32 +13,52 @@ class CredentialsTextField extends StatelessWidget {
   final TextEditingController controller;
 
   @override
+  State<CredentialsTextField> createState() => _CredentialsTextFieldState();
+}
+
+class _CredentialsTextFieldState extends State<CredentialsTextField> {
+  bool showPass = false;
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    return Material(
-      elevation: .5,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        height: size.height / 15,
-        width: size.width,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+    return Container(
+      height: size.height / 15,
+      width: size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.grey.shade500,
         ),
-        child: TextField(
-          obscureText: isPassword,
-          controller: controller,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: labelText,
-            labelStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Palette.primaryColor,
-            ),
+      ),
+      child: TextField(
+        obscureText: showPass,
+        controller: widget.controller,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          labelText: widget.labelText,
+          labelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Palette.primaryColor,
           ),
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showPass = !showPass;
+                    });
+                  },
+                  icon: Icon(
+                    showPass
+                        ? Icons.remove_red_eye
+                        : CupertinoIcons.eye_slash_fill,
+                    color: Colors.black38,
+                    size: 28,
+                  ))
+              : null,
         ),
       ),
     );

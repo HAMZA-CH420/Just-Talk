@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
-class CustomSearchBar extends StatelessWidget {
+class CustomSearchBar extends StatefulWidget {
   const CustomSearchBar({super.key});
+
+  @override
+  State<CustomSearchBar> createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<CustomSearchBar> {
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +24,18 @@ class CustomSearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: TextField(
+        controller: searchController,
         decoration: InputDecoration(
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.search,
-            color: Palette.primaryColor,
+            color: Colors.black,
             size: 27,
           ),
           hintText: "Search...",
           hintStyle: TextStyle(
             fontSize: 18,
-            color: Palette.primaryColor,
+            color: Colors.black,
           ),
         ),
       ),

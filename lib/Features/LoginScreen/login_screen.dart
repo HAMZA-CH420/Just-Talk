@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CredentialsTextField(
                   labelText: "Password",
                   controller: passwordController,
+                  isPassword: true,
                 ),
                 SizedBox(
                   height: 10,

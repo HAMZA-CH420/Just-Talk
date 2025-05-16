@@ -58,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     CredentialsTextField(
                       labelText: "Password",
                       controller: passwordController,
+                      isPassword: true,
                     ),
                     SizedBox(
                       height: 10,
