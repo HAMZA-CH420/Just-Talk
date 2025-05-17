@@ -7,22 +7,23 @@ class CredentialsTextField extends StatefulWidget {
       {super.key,
       required this.labelText,
       this.isPassword = false,
-      required this.controller});
+      required this.controller,
+      required this.validator});
   final String labelText;
   final bool isPassword;
   final TextEditingController controller;
+  final FormFieldValidator validator;
 
   @override
   State<CredentialsTextField> createState() => _CredentialsTextFieldState();
 }
 
 class _CredentialsTextFieldState extends State<CredentialsTextField> {
-  bool showPass = false;
+  bool showPass = true;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return Container(
-      height: size.height / 15,
       width: size.width,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       alignment: Alignment.center,
@@ -33,8 +34,9 @@ class _CredentialsTextFieldState extends State<CredentialsTextField> {
           color: Colors.grey.shade500,
         ),
       ),
-      child: TextField(
-        obscureText: showPass,
+      child: TextFormField(
+        validator: widget.validator,
+        obscureText: widget.isPassword ? showPass : false,
         controller: widget.controller,
         decoration: InputDecoration(
           border: InputBorder.none,
