@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/all_chats.dart';
@@ -26,6 +27,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
+          scrolledUnderElevation: 0.0,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           title: Text(
             "Inbox",
             style: GoogleFonts.publicSans(

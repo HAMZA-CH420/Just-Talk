@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445075221076",
+    "project_id": "just-talk-d97a9",
+    "storage_bucket": "just-talk-d97a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445075221076:android:97aeb790e9b3dde90cdbc1",
+        "android_client_info": {
+          "package_name": "com.example.just_talk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdKyxW3F0glrw3P8ZaLU6w0_2s51NDwes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
