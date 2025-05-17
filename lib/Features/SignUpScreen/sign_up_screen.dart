@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
 import 'package:just_talk/Features/LoginScreen/login_screen.dart';
+import 'package:just_talk/Features/Services/AuthServices/auth_services.dart';
 import 'package:just_talk/Features/ViewModel/Validator/validator.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:just_talk/UiHelpers/Utils/Widgets/credentials_text_field.dart';
@@ -74,13 +76,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       PrimaryButton(
                         btnName: "SignUp",
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BottomNavBar(),
-                                ));
+                            try {
+                              await AuthServices().createUserWithEmail(
+                                  emailController.text.trim(),
+                                  passwordController.text.trim(),
+                                  usernameController.text.trim());
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BottomNavBar(),
+                                  ));
+                            } on FirebaseAuthException {
+                              debugPrint("Error");
+                            }
                           }
                         },
                       ),
