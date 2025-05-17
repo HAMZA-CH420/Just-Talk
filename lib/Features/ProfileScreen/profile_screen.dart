@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -7,10 +9,20 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ProfileScreen"),
-        centerTitle: true,
+        title: Text("Profile"),
       ),
-      body: Container(),
+      body: Center(
+        child: GestureDetector(
+          onTap: () => FirebaseAuth.instance.signOut(),
+          child: Text(
+            "SignOut",
+            style: GoogleFonts.publicSans(
+              fontSize: 20,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
