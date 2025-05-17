@@ -22,6 +22,7 @@ class AuthServices {
     try {
       await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      await firebaseAuth.currentUser!.updateDisplayName(username);
       return showToast("User Created Successfully", Colors.green);
     } on FirebaseAuthException {
       return showToast("User Already Exists", Colors.red);
