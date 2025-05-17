@@ -27,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     emailController.dispose();
     passwordController.dispose();
     usernameController.dispose();
+    FocusManager.instance.primaryFocus!.unfocus();
     super.dispose();
   }
 
