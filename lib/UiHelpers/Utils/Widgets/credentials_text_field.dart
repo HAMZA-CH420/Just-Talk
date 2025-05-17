@@ -25,7 +25,7 @@ class _CredentialsTextFieldState extends State<CredentialsTextField> {
     final size = MediaQuery.sizeOf(context);
     return Container(
       width: size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.white,
