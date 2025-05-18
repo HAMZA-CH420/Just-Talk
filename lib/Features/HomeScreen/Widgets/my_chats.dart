@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/ChatRoom/chatroom.dart';
+import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
+import 'package:provider/provider.dart';
 
 class MyChats extends StatefulWidget {
   const MyChats({super.key});
@@ -42,19 +44,26 @@ class _MyChatsState extends State<MyChats> {
             return ListView.builder(
               itemCount: myChats.length,
               itemBuilder: (context, index) {
+                final currentUserId = auth.currentUser?.displayName;
                 final otherUserId = myChats.keys.elementAt(index);
                 final otherUserData = myChats[otherUserId];
                 if (myChats.isEmpty) {
                   return Center(child: Text("No user found!"));
                 } else {
+                  final chatRoomId = context
+                      .read<ChatProvider>()
+                      .chatRoomId(currentUserId, otherUserId);
                   return ListTile(
                     contentPadding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Chatroom(),
+                            builder: (context) => Chatroom(
+                              chatRoomId: chatRoomId,
+                              userMap: otherUserData,
+                            ),
                           ));
                     },
                     leading: CircleAvatar(

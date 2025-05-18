@@ -55,6 +55,9 @@ class _AllChatsState extends State<AllChats> {
                   if (currentUserId == otherUserId) {
                     return SizedBox.shrink();
                   } else {
+                    final chatRoomId = context
+                        .read<ChatProvider>()
+                        .chatRoomId(currentUserId, otherUserId);
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 5),
                       onTap: () {
@@ -66,7 +69,10 @@ class _AllChatsState extends State<AllChats> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Chatroom(),
+                              builder: (context) => Chatroom(
+                                chatRoomId: chatRoomId,
+                                userMap: userMap,
+                              ),
                             ));
                       },
                       leading: CircleAvatar(
