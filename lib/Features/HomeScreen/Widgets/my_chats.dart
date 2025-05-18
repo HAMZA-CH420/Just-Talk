@@ -40,7 +40,6 @@ class _MyChatsState extends State<MyChats> {
           return ListView.builder(
             itemCount: myChats.length,
             itemBuilder: (context, index) {
-              final currentUserId = auth.currentUser?.displayName;
               final otherUserId = myChats.keys.elementAt(index);
               final otherUserData = myChats[otherUserId];
               if (myChats.isEmpty) {
