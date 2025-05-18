@@ -9,11 +9,15 @@ class AddNewChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            CustomSearchBar(),
-            Expanded(child: AllChats()),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            spacing: 20,
+            children: [
+              CustomSearchBar(),
+              Expanded(child: AllChats()),
+            ],
+          ),
         ),
       ),
     );
