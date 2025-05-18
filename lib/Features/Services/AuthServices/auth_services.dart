@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthServices {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   ///Method to Login User
   Future<void> loginUserWithCredentials(var email, var password) async {
@@ -23,6 +25,12 @@ class AuthServices {
       await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       await firebaseAuth.currentUser!.updateDisplayName(username);
+      await fireStore.collection("users").doc(username).set({
+        "name": username,
+        "status": "unavailable",
+        "uid": firebaseAuth.currentUser?.uid,
+        "time": FieldValue.serverTimestamp(),
+      });
       return showToast("User Created Successfully", Colors.green);
     } on FirebaseAuthException {
       return showToast("User Already Exists", Colors.red);

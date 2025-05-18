@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_talk/Features/AuthenticationScreens/LoginScreen/login_screen.dart';
 import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
-import 'package:just_talk/Features/LoginScreen/login_screen.dart';
 import 'package:just_talk/Features/Services/AuthServices/auth_services.dart';
 import 'package:just_talk/Features/ViewModel/Validator/validator.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
@@ -83,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               await AuthServices().createUserWithEmail(
                                   emailController.text.trim(),
                                   passwordController.text.trim(),
-                                  usernameController.text.trim());
+                                  usernameController.text.toString());
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
