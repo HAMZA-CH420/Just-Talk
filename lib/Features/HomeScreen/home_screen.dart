@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:just_talk/Features/HomeScreen/Widgets/all_chats.dart';
+import 'package:just_talk/Features/AddNewChat/add_new_chat.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/search_bar.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
@@ -17,7 +17,13 @@ class HomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddNewChat(),
+                ));
+          },
           backgroundColor: Palette.primaryColor,
           shape: CircleBorder(),
           elevation: 2,
@@ -52,8 +58,8 @@ class HomeScreen extends StatelessWidget {
             spacing: 10,
             children: [
               CustomSearchBar(),
-              Expanded(
-                child: AllChats(),
+              Center(
+                child: Text("Start Chatting"),
               ),
             ],
           ),
