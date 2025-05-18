@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:just_talk/Features/AddNewChat/ViewModel/new_chat_provider.dart';
 import 'package:just_talk/Features/AuthenticationScreens/ViewModel/auth_provider.dart';
 import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/Features/SplashScreen/splash_screen.dart';
@@ -15,6 +16,9 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => ChatProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => NewChatProvider(),
       )
     ],
     child: const MyApp(),

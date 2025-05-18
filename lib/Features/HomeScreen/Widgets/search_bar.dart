@@ -18,6 +18,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       width: size.width,
       height: size.height / 16,
       padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 15),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         color: Palette.secondaryColor,

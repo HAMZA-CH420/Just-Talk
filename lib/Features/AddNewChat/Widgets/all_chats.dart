@@ -57,6 +57,11 @@ class _AllChatsState extends State<AllChats> {
                   } else {
                     return ListTile(
                       onTap: () {
+                        createMyChatsCollection(
+                            otherUserId,
+                            otherUserData["name"],
+                            otherUserData["status"],
+                            otherUserData["uid"]);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -72,14 +77,14 @@ class _AllChatsState extends State<AllChats> {
                         ),
                       ),
                       title: Text(
-                        userMap[otherUserId]["name"],
+                        otherUserData["name"],
                         style: GoogleFonts.publicSans(
                             fontSize: 18,
                             color: Palette.primaryColor,
                             fontWeight: FontWeight.w600),
                       ),
                       trailing: Text(
-                        userMap[otherUserId]["status"],
+                        otherUserData["status"],
                         style: GoogleFonts.publicSans(
                             fontSize: 13, fontWeight: FontWeight.w500),
                       ),
@@ -105,5 +110,19 @@ class _AllChatsState extends State<AllChats> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  //Method to create new collection where all our home screen chats will be stored
+  Future<void> createMyChatsCollection(
+    String docName,
+    String name,
+    String status,
+    String uid,
+  ) async {
+    fireStore.collection("myChats").doc(docName).set({
+      "name": name,
+      "status": status,
+      "uid": uid,
+    });
   }
 }
