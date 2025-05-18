@@ -56,6 +56,7 @@ class _AllChatsState extends State<AllChats> {
                     return SizedBox.shrink();
                   } else {
                     return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5),
                       onTap: () {
                         createMyChatsCollection(
                             otherUserId,

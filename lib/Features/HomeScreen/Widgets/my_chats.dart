@@ -25,70 +25,75 @@ class _MyChatsState extends State<MyChats> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchMyChatsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Palette.primaryColor,
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Unknown Error"));
-        } else {
-          return ListView.builder(
-            itemCount: myChats.length,
-            itemBuilder: (context, index) {
-              final otherUserId = myChats.keys.elementAt(index);
-              final otherUserData = myChats[otherUserId];
-              if (myChats.isEmpty) {
-                return Center(child: Text("No user found!"));
-              } else {
-                return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Chatroom(),
-                        ));
-                  },
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Palette.primaryColor,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
+    return RefreshIndicator(
+      onRefresh: () => _handleRefresh(),
+      child: FutureBuilder(
+        future: _fetchMyChatsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Palette.primaryColor,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Unknown Error"));
+          } else {
+            return ListView.builder(
+              itemCount: myChats.length,
+              itemBuilder: (context, index) {
+                final otherUserId = myChats.keys.elementAt(index);
+                final otherUserData = myChats[otherUserId];
+                if (myChats.isEmpty) {
+                  return Center(child: Text("No user found!"));
+                } else {
+                  return ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Chatroom(),
+                          ));
+                    },
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Palette.primaryColor,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    otherUserData["name"],
-                    style: GoogleFonts.publicSans(
-                        fontSize: 18,
-                        color: Palette.primaryColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  subtitle: Text(
-                    "How you doing?",
-                    style: GoogleFonts.publicSans(
-                        fontSize: 15,
+                    title: Text(
+                      otherUserData["name"],
+                      style: GoogleFonts.publicSans(
+                          fontSize: 18,
+                          color: Palette.primaryColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      "How you doing?",
+                      style: GoogleFonts.publicSans(
+                          fontSize: 15,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    trailing: Text(
+                      otherUserData["status"],
+                      style: GoogleFonts.publicSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
                         color: Colors.grey,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  trailing: Text(
-                    otherUserData["status"],
-                    style: GoogleFonts.publicSans(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
+                      ),
                     ),
-                  ),
-                );
-              }
-            },
-          );
-        }
-      },
+                  );
+                }
+              },
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -103,5 +108,12 @@ class _MyChatsState extends State<MyChats> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Future<void> _handleRefresh() async {
+    setState(() {
+      _fetchMyChatsFuture = fetchMyChats();
+    });
+    await _fetchMyChatsFuture;
   }
 }
