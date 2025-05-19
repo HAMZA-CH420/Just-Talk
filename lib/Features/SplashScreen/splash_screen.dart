@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_talk/Features/AuthenticationScreens/LoginScreen/login_screen.dart';
-import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
+import 'package:just_talk/Features/HomeScreen/home_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               );
             } else if (snapshot.data != null) {
-              return BottomNavBar();
+              return HomeScreen();
             } else {
               return LoginScreen();
             }

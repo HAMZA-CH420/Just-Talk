@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_talk/Features/AddNewChat/add_new_chat.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/my_chats.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/search_bar.dart';
+import 'package:just_talk/Features/ProfileScreen/profile_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -48,10 +48,14 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
-                onPressed: () => FirebaseAuth.instance.signOut(),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(),
+                    )),
                 icon: Icon(
-                  Iconsax.logout,
-                  color: Colors.red,
+                  CupertinoIcons.person_alt,
+                  color: Colors.black,
                 ))
           ],
         ),

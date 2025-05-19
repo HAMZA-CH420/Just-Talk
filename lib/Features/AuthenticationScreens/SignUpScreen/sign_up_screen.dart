@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_talk/Features/AuthenticationScreens/LoginScreen/login_screen.dart';
 import 'package:just_talk/Features/AuthenticationScreens/ViewModel/auth_provider.dart';
-import 'package:just_talk/Features/BottomNavBar/bottom_nav_bar.dart';
+import 'package:just_talk/Features/HomeScreen/home_screen.dart';
 import 'package:just_talk/Features/Services/AuthServices/auth_services.dart';
 import 'package:just_talk/Features/ViewModel/Validator/validator.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => BottomNavBar(),
+                                    builder: (context) => HomeScreen(),
                                   ));
                             } on FirebaseAuthException {
                               debugPrint("Error");
