@@ -47,16 +47,24 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           actions: [
-            IconButton(
-                onPressed: () => Navigator.push(
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileScreen(),
                     )),
-                icon: Icon(
-                  CupertinoIcons.person_alt,
-                  color: Colors.black,
-                ))
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Palette.secondaryColor,
+                  child: Icon(
+                    CupertinoIcons.person_alt,
+                    color: Palette.primaryColor,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
         body: Padding(
