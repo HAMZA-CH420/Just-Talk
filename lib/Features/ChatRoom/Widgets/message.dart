@@ -24,8 +24,8 @@ class Message extends StatelessWidget {
                 ? Radius.circular(15)
                 : Radius.circular(0),
             bottomRight: map["sentBy"] == auth.currentUser!.displayName
-                ? Radius.circular(15)
-                : Radius.circular(0),
+                ? Radius.circular(0)
+                : Radius.circular(15),
           ),
           color: map["sentBy"] == auth.currentUser!.displayName
               ? Colors.white
