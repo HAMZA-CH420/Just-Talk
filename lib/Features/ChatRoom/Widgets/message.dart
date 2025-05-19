@@ -15,6 +15,7 @@ class Message extends StatelessWidget {
           : Alignment.centerLeft,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),

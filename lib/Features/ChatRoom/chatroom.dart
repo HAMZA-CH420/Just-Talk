@@ -20,54 +20,60 @@ class _ChatroomState extends State<Chatroom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(widget.userMap["name"], widget.userMap["status"]),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: StreamBuilder(
-                  stream: fireStore
-                      .collection("chatRoom")
-                      .doc(widget.chatRoomId)
-                      .collection("chats")
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: Palette.primaryColor,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text("Error: ${snapshot.error}"),
-                      );
-                    } else if (!snapshot.hasData ||
-                        snapshot.data!.docs.isEmpty) {
-                      return Center(
-                        child: Text("No Messages Yet"),
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          return Message(
-                            map: snapshot.data!.docs[index].data(),
-                          );
-                        },
-                      );
-                    }
-                  },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus!.unfocus();
+      },
+      child: Scaffold(
+        appBar: appBar(widget.userMap["name"], widget.userMap["status"]),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: StreamBuilder(
+                    stream: fireStore
+                        .collection("chatRoom")
+                        .doc(widget.chatRoomId)
+                        .collection("chats")
+                        .orderBy("time", descending: false)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Palette.primaryColor,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Error: ${snapshot.error}"),
+                        );
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.docs.isEmpty) {
+                        return Center(
+                          child: Text("No Messages Yet"),
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Message(
+                              map: snapshot.data!.docs[index].data(),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-              MessageInput(
-                chatRoomId: widget.chatRoomId,
-              ),
-            ],
+                MessageInput(
+                  chatRoomId: widget.chatRoomId,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -78,6 +84,7 @@ class _ChatroomState extends State<Chatroom> {
     return AppBar(
       leadingWidth: 20,
       title: Row(
+        spacing: 15,
         children: [
           CircleAvatar(
             radius: 25,
@@ -87,7 +94,6 @@ class _ChatroomState extends State<Chatroom> {
               color: Colors.white,
             ),
           ),
-          SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
