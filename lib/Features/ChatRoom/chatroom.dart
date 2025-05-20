@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message_input.dart';
+import 'package:just_talk/Features/ProfileScreen/profile_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
 class Chatroom extends StatefulWidget {
@@ -12,9 +13,10 @@ class Chatroom extends StatefulWidget {
     required this.chatRoomId,
     required this.name,
     required this.status,
+    required this.userId,
   });
   final String chatRoomId;
-  final String name, status;
+  final String name, status, userId;
 
   @override
   State<Chatroom> createState() => _ChatroomState();
@@ -30,7 +32,7 @@ class _ChatroomState extends State<Chatroom> {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: Scaffold(
-        appBar: appBar(widget.name, widget.status),
+        appBar: appBar(widget.name, widget.status, widget.userId),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -85,7 +87,7 @@ class _ChatroomState extends State<Chatroom> {
     );
   }
 
-  PreferredSizeWidget appBar(String name, String status) {
+  PreferredSizeWidget appBar(String name, String status, String userId) {
     return AppBar(
       leadingWidth: 20,
       title: Row(
@@ -99,26 +101,35 @@ class _ChatroomState extends State<Chatroom> {
               color: Colors.white,
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: GoogleFonts.publicSans(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  color: Palette.primaryColor,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(userId: userId),
+                  ));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: GoogleFonts.publicSans(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    color: Palette.primaryColor,
+                  ),
                 ),
-              ),
-              Text(
-                status,
-                style: GoogleFonts.publicSans(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Colors.grey,
+                Text(
+                  status,
+                  style: GoogleFonts.publicSans(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

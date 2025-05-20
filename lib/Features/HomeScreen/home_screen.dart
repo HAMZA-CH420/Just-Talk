@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
@@ -80,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileScreen(),
+                      builder: (context) => ProfileScreen(
+                        userId: auth.currentUser!.displayName ?? "Default",
+                      ),
                     )),
                 child: CircleAvatar(
                   radius: 22,
