@@ -3,13 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/AddNewChat/add_new_chat.dart';
+import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/my_chats.dart';
 import 'package:just_talk/Features/HomeScreen/Widgets/search_bar.dart';
 import 'package:just_talk/Features/ProfileScreen/profile_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<ChatProvider>().updateUserStatus("online");
+    }
+    if (state == AppLifecycleState.detached) {
+      context.read<ChatProvider>().updateUserStatus("Offline");
+    }
+    if (state == AppLifecycleState.inactive) {
+      context.read<ChatProvider>().updateUserStatus("Offline");
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {

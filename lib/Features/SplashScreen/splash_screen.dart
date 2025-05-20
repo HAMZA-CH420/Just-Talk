@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Navigator.pushReplacement(context, MaterialPageRoute(
       builder: (context) {
         return StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
+          stream: FirebaseAuth.instance.idTokenChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
