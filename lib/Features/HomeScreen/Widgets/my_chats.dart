@@ -40,16 +40,16 @@ class _MyChatsState extends State<MyChats> {
             );
           } else if (snapshot.hasError) {
             return Center(child: Text("Unknown Error"));
+          }
+          if (myChats.isEmpty) {
+            return Center(child: Text("No user found!"));
           } else {
             return ListView.builder(
-              itemCount: myChats.length,
-              itemBuilder: (context, index) {
-                final currentUserId = auth.currentUser?.displayName;
-                final otherUserId = myChats.keys.elementAt(index);
-                final otherUserData = myChats[otherUserId];
-                if (myChats.isEmpty) {
-                  return Center(child: Text("No user found!"));
-                } else {
+                itemCount: myChats.length,
+                itemBuilder: (context, index) {
+                  final currentUserId = auth.currentUser?.displayName;
+                  final otherUserId = myChats.keys.elementAt(index);
+                  final otherUserData = myChats[otherUserId];
                   final chatRoomId = context
                       .read<ChatProvider>()
                       .chatRoomId(currentUserId, otherUserId);
@@ -62,7 +62,8 @@ class _MyChatsState extends State<MyChats> {
                           MaterialPageRoute(
                             builder: (context) => Chatroom(
                               chatRoomId: chatRoomId,
-                              userMap: otherUserData,
+                              name: otherUserData["name"],
+                              status: otherUserData["status"],
                             ),
                           ));
                     },
@@ -97,9 +98,7 @@ class _MyChatsState extends State<MyChats> {
                       ),
                     ),
                   );
-                }
-              },
-            );
+                });
           }
         },
       ),
@@ -109,7 +108,9 @@ class _MyChatsState extends State<MyChats> {
   /// Method to fetch all users from DB
   Future fetchMyChats() async {
     try {
-      QuerySnapshot querySnapshot = await fireStore.collection("myChats").get();
+      QuerySnapshot querySnapshot = await fireStore
+          .collection(auth.currentUser!.displayName ?? "myChats")
+          .get();
 
       myChats = Map.fromEntries(querySnapshot.docs.map(
         (doc) => MapEntry(doc.id, doc.data()),

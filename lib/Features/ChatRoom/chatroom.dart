@@ -7,9 +7,14 @@ import 'package:just_talk/Features/ChatRoom/Widgets/message_input.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
 class Chatroom extends StatefulWidget {
-  const Chatroom({super.key, required this.chatRoomId, required this.userMap});
+  const Chatroom({
+    super.key,
+    required this.chatRoomId,
+    required this.name,
+    required this.status,
+  });
   final String chatRoomId;
-  final Map<String, dynamic> userMap;
+  final String name, status;
 
   @override
   State<Chatroom> createState() => _ChatroomState();
@@ -25,7 +30,7 @@ class _ChatroomState extends State<Chatroom> {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: Scaffold(
-        appBar: appBar(widget.userMap["name"], widget.userMap["status"]),
+        appBar: appBar(widget.name, widget.status),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

@@ -9,11 +9,15 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Profile"),
       ),
       body: Center(
         child: IconButton(
-            onPressed: () async => await FirebaseAuth.instance.signOut(),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
             icon: Icon(Iconsax.logout)),
       ),
     );

@@ -40,6 +40,9 @@ class _AllChatsState extends State<AllChats> {
           return Center(
             child: Text("Unknown Error"),
           );
+        }
+        if (userMap.isEmpty) {
+          return Center(child: Text("No User Found"));
         } else {
           return Consumer<ChatProvider>(
             builder: (context, value, child) {
@@ -49,9 +52,7 @@ class _AllChatsState extends State<AllChats> {
                   final currentUserId = auth.currentUser?.displayName;
                   final otherUserId = userMap.keys.elementAt(index);
                   final otherUserData = userMap[otherUserId];
-                  if (userMap.isEmpty) {
-                    return Center(child: Text("No User Found"));
-                  }
+
                   if (currentUserId == otherUserId) {
                     return SizedBox.shrink();
                   } else {
@@ -71,7 +72,8 @@ class _AllChatsState extends State<AllChats> {
                             MaterialPageRoute(
                               builder: (context) => Chatroom(
                                 chatRoomId: chatRoomId,
-                                userMap: userMap,
+                                name: otherUserData["name"],
+                                status: otherUserData["status"],
                               ),
                             ));
                       },
@@ -126,7 +128,10 @@ class _AllChatsState extends State<AllChats> {
     String status,
     String uid,
   ) async {
-    fireStore.collection("myChats").doc(docName).set({
+    fireStore
+        .collection(auth.currentUser!.displayName ?? "myChats")
+        .doc(docName)
+        .set({
       "name": name,
       "status": status,
       "uid": uid,
