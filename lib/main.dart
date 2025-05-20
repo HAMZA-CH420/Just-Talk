@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:just_talk/Features/AddNewChat/ViewModel/new_chat_provider.dart';
 import 'package:just_talk/Features/AuthenticationScreens/ViewModel/auth_provider.dart';
 import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
+import 'package:just_talk/Features/ProfileScreen/ViewModel/profile_provider.dart';
 import 'package:just_talk/Features/SplashScreen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,9 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => NewChatProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => ProfileProvider(),
       )
     ],
     child: const MyApp(),

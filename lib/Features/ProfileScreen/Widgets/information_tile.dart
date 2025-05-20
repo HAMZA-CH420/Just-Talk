@@ -7,12 +7,17 @@ class InformationTile extends StatelessWidget {
       {super.key,
       required this.title,
       required this.subtitle,
-      required this.icon});
+      required this.icon,
+      required this.isLoggedUser,
+      required this.onTap});
   final String title, subtitle;
   final IconData icon;
+  final bool isLoggedUser;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       minLeadingWidth: 35,
       leading: Icon(icon),
       title: Text(
@@ -22,7 +27,19 @@ class InformationTile extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Palette.primaryColor),
       ),
-      subtitle: Text(subtitle),
+      subtitle: Text(subtitle,
+          style: GoogleFonts.publicSans(
+            fontSize: 15,
+          )),
+      trailing: isLoggedUser
+          ? GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.edit,
+                color: Colors.black54,
+              ),
+            )
+          : null,
     );
   }
 }
