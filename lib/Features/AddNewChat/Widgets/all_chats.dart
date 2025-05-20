@@ -6,6 +6,7 @@ import 'package:just_talk/Features/ChatRoom/chatroom.dart';
 import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AllChats extends StatefulWidget {
   const AllChats({super.key});
@@ -31,11 +32,7 @@ class _AllChatsState extends State<AllChats> {
       future: _fetchUsersFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Palette.primaryColor,
-            ),
-          );
+          return waitingIndicator();
         } else if (snapshot.hasError) {
           return Center(
             child: Text("Unknown Error"),
@@ -136,5 +133,34 @@ class _AllChatsState extends State<AllChats> {
       "status": status,
       "uid": uid,
     });
+  }
+
+//Loading indicator
+  Widget waitingIndicator() {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: ListTile(
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.white,
+            ),
+            title: Container(
+              height: 15,
+              width: double.infinity,
+              color: Colors.white,
+            ),
+            subtitle: Container(
+              width: 100,
+              height: 15,
+              color: Colors.white,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
