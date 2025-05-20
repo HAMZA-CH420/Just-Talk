@@ -4,7 +4,7 @@ class Validator {
     if (value == null || value.isEmpty) {
       return "Please enter your email address";
     }
-    if (!value.contains("@")) {
+    if (!value.contains("@gmail.com")) {
       return "Please enter a valid email address";
     }
     return null;

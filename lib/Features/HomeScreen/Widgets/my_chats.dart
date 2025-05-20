@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/ChatRoom/chatroom.dart';
 import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
@@ -42,7 +43,24 @@ class _MyChatsState extends State<MyChats> {
             return Center(child: Text("Unknown Error"));
           }
           if (myChats.isEmpty) {
-            return Center(child: Text("No user found!"));
+            return Center(
+              child: GestureDetector(
+                onTap: () => _handleRefresh(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    SizedBox(
+                      child: SvgPicture.asset("assets/images/no_chats.svg"),
+                    ),
+                    Text(
+                      "No chats here! Click to refresh",
+                      style: GoogleFonts.publicSans(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else {
             return ListView.builder(
                 itemCount: myChats.length,
