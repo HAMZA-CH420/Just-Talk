@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:just_talk/Features/ProfileScreen/Widgets/edit_user_profile.dart';
 import 'package:just_talk/Features/ProfileScreen/Widgets/information_tile.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
 
@@ -31,85 +32,107 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: Text("Profile"),
       ),
-      body: FutureBuilder(
-        future: _fetchUsersFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Unknown Error"));
-          } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                spacing: 18,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 85,
-                      backgroundColor: Palette.primaryColor,
-                      child: Icon(
-                        CupertinoIcons.person,
-                        color: Colors.white,
-                        size: 50,
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: _fetchUsersFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Unknown Error"));
+            } else {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  spacing: 18,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 85,
+                        backgroundColor: Palette.primaryColor,
+                        child: Icon(
+                          CupertinoIcons.person,
+                          color: Colors.white,
+                          size: 50,
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      InformationTile(
-                        title: "Name",
-                        subtitle: userMap[widget.userId]["name"],
-                        icon: CupertinoIcons.person,
-                        onTap: () {},
-                        isLoggedUser: userMap[widget.userId]["name"] ==
-                            auth.currentUser!.displayName,
-                      ),
-                      InformationTile(
-                        title: "About",
-                        subtitle: userMap[widget.userId]["about"],
-                        icon: Icons.info_outline,
-                        onTap: () {},
-                        isLoggedUser: userMap[widget.userId]["name"] ==
-                            auth.currentUser!.displayName,
-                      ),
-                      InformationTile(
-                        title: "Email Address",
-                        subtitle: userMap[widget.userId]["email"],
-                        icon: Icons.email_outlined,
-                        onTap: () {},
-                        isLoggedUser: userMap[widget.userId]["name"] ==
-                            auth.currentUser!.displayName,
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      await auth.signOut();
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      spacing: 8,
+                    Column(
                       children: [
-                        Text(
-                          "LogOut",
-                          style: GoogleFonts.publicSans(
-                              color: Colors.red, fontSize: 18),
+                        InformationTile(
+                          title: "Name",
+                          subtitle: userMap[widget.userId]["name"],
+                          icon: CupertinoIcons.person,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditUserProfile(
+                                  label: "Name",
+                                  controllerValue: userMap[widget.userId]
+                                      ["name"],
+                                ),
+                              )),
+                          isLoggedUser: userMap[widget.userId]["name"] ==
+                              auth.currentUser!.displayName,
                         ),
-                        Icon(
-                          Iconsax.logout,
-                          color: Colors.red,
-                        )
+                        InformationTile(
+                          title: "About",
+                          subtitle: userMap[widget.userId]["about"],
+                          icon: Icons.info_outline,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditUserProfile(
+                                  label: "About",
+                                  controllerValue: userMap[widget.userId]
+                                      ["about"],
+                                ),
+                              )),
+                          isLoggedUser: userMap[widget.userId]["name"] ==
+                              auth.currentUser!.displayName,
+                        ),
+                        InformationTile(
+                          title: "Email Address",
+                          subtitle: userMap[widget.userId]["email"],
+                          icon: Icons.email_outlined,
+                          onTap: () {},
+                          isLoggedUser: userMap[widget.userId]["name"] ==
+                              auth.currentUser!.displayName,
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+                    userMap[widget.userId]["name"] ==
+                            auth.currentUser!.displayName
+                        ? GestureDetector(
+                            onTap: () async {
+                              await auth.signOut();
+                              Navigator.pop(context);
+                            },
+                            child: Row(
+                              spacing: 8,
+                              children: [
+                                Text(
+                                  "LogOut",
+                                  style: GoogleFonts.publicSans(
+                                      color: Colors.red, fontSize: 18),
+                                ),
+                                Icon(
+                                  Iconsax.logout,
+                                  color: Colors.red,
+                                )
+                              ],
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
