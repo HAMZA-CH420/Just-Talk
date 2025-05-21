@@ -30,7 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text(
+          "Profile",
+          style: GoogleFonts.publicSans(
+            fontSize: 25,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder(
