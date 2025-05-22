@@ -22,7 +22,7 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  //method to update user status based on app life cycle
+  ///method to update user status based on app life cycle
   Future<void> updateUserStatus(String status) async {
     try {
       await fireStore
