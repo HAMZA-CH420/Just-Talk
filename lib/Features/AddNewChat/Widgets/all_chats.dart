@@ -119,7 +119,7 @@ class _AllChatsState extends State<AllChats> {
     }
   }
 
-  //Method to create new collection where all our home screen chats will be stored
+  ///Method to create new collection where all our home screen chats will be stored
   Future<void> createMyChatsCollection(
     String docName,
     String name,
