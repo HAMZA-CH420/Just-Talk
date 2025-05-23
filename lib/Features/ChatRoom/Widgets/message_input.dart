@@ -30,13 +30,13 @@ class _MessageInputState extends State<MessageInput> {
       spacing: 5,
       children: [
         Container(
-          height: size.height / 17,
+          height: size.height / 18,
           width: size.width / 1.3,
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.only(left: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 13),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(22),
             color: Palette.secondaryColor,
           ),
           child: TextField(
@@ -53,7 +53,7 @@ class _MessageInputState extends State<MessageInput> {
             controller.clear();
           },
           child: CircleAvatar(
-            radius: 23,
+            radius: 24,
             backgroundColor: Palette.primaryColor,
             child: Icon(
               Icons.send,
