@@ -112,9 +112,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     userMap[widget.userId]["name"] ==
                             auth.currentUser!.displayName
                         ? GestureDetector(
-                            onTap: () async {
-                              await auth.signOut();
-                              Navigator.pop(context);
+                            onTap: () {
+                              _showAlertDialog(context);
                             },
                             child: Row(
                               spacing: 8,
@@ -161,10 +160,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Do you want to logout?"),
+          title: Text(
+            "Do you want to logout?",
+            style: GoogleFonts.publicSans(
+                fontWeight: FontWeight.w600, fontSize: 17),
+          ),
           actions: [
-            TextButton(onPressed: () {}, child: Text("No")),
-            TextButton(onPressed: () {}, child: Text("Yes")),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: Text("No")),
+            TextButton(
+                onPressed: () async {
+                  await auth.signOut();
+                  Navigator.popUntil(
+                    context,
+                    (route) => route.isFirst,
+                  );
+                },
+                child: Text("Yes")),
           ],
         );
       },
