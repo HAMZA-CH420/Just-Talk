@@ -154,4 +154,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       debugPrint(e.toString());
     }
   }
+
+  //show alert dialog
+  _showAlertDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Do you want to logout?"),
+          actions: [
+            TextButton(onPressed: () {}, child: Text("No")),
+            TextButton(onPressed: () {}, child: Text("Yes")),
+          ],
+        );
+      },
+    );
+  }
 }
