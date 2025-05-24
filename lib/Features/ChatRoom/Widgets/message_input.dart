@@ -49,8 +49,11 @@ class _MessageInputState extends State<MessageInput> {
         ),
         GestureDetector(
           onTap: () {
-            onSendMessage();
-            controller.clear();
+            if (controller.text.isEmpty) {
+            } else {
+              onSendMessage();
+              controller.clear();
+            }
           },
           child: CircleAvatar(
             radius: 24,

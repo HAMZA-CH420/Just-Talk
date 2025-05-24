@@ -16,7 +16,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     final size = MediaQuery.sizeOf(context);
     return Container(
       width: size.width,
-      height: size.height / 16,
+      height: size.height / 18,
       padding: EdgeInsets.symmetric(horizontal: 10),
       margin: EdgeInsets.symmetric(horizontal: 15),
       alignment: Alignment.centerLeft,
