@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           future: _fetchUsersFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: Center(child: CircularProgressIndicator()));
+              return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text("Unknown Error"));
             } else {

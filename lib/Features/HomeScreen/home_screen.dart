@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileScreen(
-                        userId: auth.currentUser!.displayName ?? "Default",
+                        userId: auth.currentUser!.uid,
                       ),
                     )),
                 child: CircleAvatar(

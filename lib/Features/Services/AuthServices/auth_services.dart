@@ -25,7 +25,10 @@ class AuthServices {
       await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       await firebaseAuth.currentUser!.updateDisplayName(username);
-      await fireStore.collection("users").doc(username).set({
+      await fireStore
+          .collection("users")
+          .doc(firebaseAuth.currentUser!.uid)
+          .set({
         "name": username,
         "status": "unavailable",
         "uid": firebaseAuth.currentUser?.uid,

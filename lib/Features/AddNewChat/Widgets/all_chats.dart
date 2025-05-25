@@ -59,6 +59,10 @@ class _AllChatsState extends State<AllChats> {
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 5),
                       onTap: () {
+                        createMyChatsCollection(
+                            otherUserDocId: otherUserData["uid"],
+                            name: otherUserData["name"],
+                            uid: otherUserData["uid"]);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -114,12 +118,11 @@ class _AllChatsState extends State<AllChats> {
     }
   }
 
-// In AllChats.dart
-  Future<void> createMyChatsCollection(
-    String otherUserDocId,
-    String name,
-    String uid,
-  ) async {
+  Future<void> createMyChatsCollection({
+    required String otherUserDocId,
+    required String name,
+    required String uid,
+  }) async {
     String? currentUserDisplayName = auth.currentUser?.displayName;
     if (currentUserDisplayName == null) {
       debugPrint(

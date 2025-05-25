@@ -125,9 +125,8 @@ class _MyChatsState extends State<MyChats> with WidgetsBindingObserver {
   /// Method to fetch all users from DB
   Future fetchMyChats() async {
     try {
-      QuerySnapshot querySnapshot = await fireStore
-          .collection(auth.currentUser!.displayName ?? "myChats")
-          .get();
+      QuerySnapshot querySnapshot =
+          await fireStore.collection(auth.currentUser!.uid).get();
 
       myChats = Map.fromEntries(querySnapshot.docs.map(
         (doc) => MapEntry(doc.id, doc.data()),
