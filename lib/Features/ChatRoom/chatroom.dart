@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message_input.dart';
@@ -24,6 +25,7 @@ class Chatroom extends StatefulWidget {
 
 class _ChatroomState extends State<Chatroom> {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,12 @@ class _ChatroomState extends State<Chatroom> {
                           child: Text("No Messages Yet"),
                         );
                       } else {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (_scrollController.hasClients) {
+                            _scrollController.jumpTo(
+                                _scrollController.position.maxScrollExtent);
+                          }
+                        });
                         return ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
@@ -71,6 +79,7 @@ class _ChatroomState extends State<Chatroom> {
                               map: snapshot.data!.docs[index].data(),
                             );
                           },
+                          controller: _scrollController,
                         );
                       }
                     },
@@ -90,6 +99,10 @@ class _ChatroomState extends State<Chatroom> {
   PreferredSizeWidget appBar(String name, String status, String userId) {
     return AppBar(
       leadingWidth: 20,
+      scrolledUnderElevation: 0.0,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       title: Row(
         spacing: 15,
         children: [
