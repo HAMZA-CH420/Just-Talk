@@ -66,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   PrimaryButton(
                     btnName: "Login",
                     onTap: () async {
+                      context.read<AuthenticationProvider>().setLoading(true);
                       if (_formKey.currentState!.validate()) {
                         try {
                           await AuthServices().loginUserWithCredentials(

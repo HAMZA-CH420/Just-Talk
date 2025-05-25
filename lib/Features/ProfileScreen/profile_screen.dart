@@ -168,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: [
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context, false);
+                  Navigator.pop(context);
                 },
                 child: Text("No")),
             TextButton(

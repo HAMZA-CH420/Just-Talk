@@ -50,7 +50,7 @@ class _AllChatsState extends State<AllChats> {
                   final otherUserId = userMap.keys.elementAt(index);
                   final otherUserData = userMap[otherUserId];
 
-                  if (currentUserId == otherUserId) {
+                  if (currentUserId == otherUserData["uid"]) {
                     return SizedBox.shrink();
                   } else {
                     final chatRoomId = context
@@ -114,21 +114,36 @@ class _AllChatsState extends State<AllChats> {
     }
   }
 
-  ///Method to create new collection where all our home screen chats will be stored
+// In AllChats.dart
   Future<void> createMyChatsCollection(
-    String docName,
+    String otherUserDocId,
     String name,
-    String status,
     String uid,
   ) async {
+    String? currentUserDisplayName = auth.currentUser?.displayName;
+    if (currentUserDisplayName == null) {
+      debugPrint(
+          "Error: Current user display name is null. Cannot create chat entry.");
+      return;
+    }
+
+    String? currentUserId = auth.currentUser?.uid;
+    if (currentUserId == null) {
+      debugPrint("Error: Current user UID is null.");
+      return;
+    }
+
     fireStore
-        .collection(auth.currentUser!.displayName ?? "myChats")
-        .doc(docName)
+        .collection("userChats")
+        .doc(currentUserId)
+        .collection("chats")
+        .doc(otherUserDocId)
         .set({
       "name": name,
-      "status": status,
       "uid": uid,
-    });
+      "lastMessage": "",
+      "timestamp": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
   }
 
 //Loading indicator
