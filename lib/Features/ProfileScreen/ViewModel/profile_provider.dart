@@ -11,7 +11,7 @@ class ProfileProvider with ChangeNotifier {
     try {
       await fireStore
           .collection("users")
-          .doc(auth.currentUser!.displayName)
+          .doc(auth.currentUser!.uid)
           .update({'name': username});
       auth.currentUser!.updateDisplayName(username);
     } catch (e) {
@@ -24,7 +24,7 @@ class ProfileProvider with ChangeNotifier {
     try {
       await fireStore
           .collection("users")
-          .doc(auth.currentUser!.displayName)
+          .doc(auth.currentUser!.uid)
           .update({'about': about});
     } catch (e) {
       debugPrint(e.toString());
