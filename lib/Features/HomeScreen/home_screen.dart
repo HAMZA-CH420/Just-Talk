@@ -29,13 +29,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<ChatProvider>().updateUserStatus("online");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "users", status: "online");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "myChats", status: "online");
     }
     if (state == AppLifecycleState.detached) {
-      context.read<ChatProvider>().updateUserStatus("Offline");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "users", status: "offline");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "myChats", status: "offline");
     }
     if (state == AppLifecycleState.inactive) {
-      context.read<ChatProvider>().updateUserStatus("Offline");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "users", status: "offline");
+      context
+          .read<ChatProvider>()
+          .updateUserStatus(collection: "myChats", status: "offline");
     }
     super.didChangeAppLifecycleState(state);
   }
