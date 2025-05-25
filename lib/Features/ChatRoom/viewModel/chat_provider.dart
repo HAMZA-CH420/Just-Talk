@@ -23,12 +23,11 @@ class ChatProvider with ChangeNotifier {
   }
 
   ///method to update user status based on app life cycle
-  Future<void> updateUserStatus(
-      {required String status, required String collection}) async {
+  Future<void> updateUserStatus({required String status}) async {
     try {
       await fireStore
           .collection("users")
-          .doc(auth.currentUser!.displayName)
+          .doc(auth.currentUser!.uid)
           .update({'status': status});
     } catch (e) {
       debugPrint(e.toString());

@@ -16,11 +16,12 @@ class MyChats extends StatefulWidget {
   State<MyChats> createState() => _MyChatsState();
 }
 
-class _MyChatsState extends State<MyChats> {
+class _MyChatsState extends State<MyChats> with WidgetsBindingObserver {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   late Map<String, dynamic> myChats;
   late Future<void> _fetchMyChatsFuture;
+
   @override
   void initState() {
     super.initState();

@@ -46,7 +46,7 @@ class _AllChatsState extends State<AllChats> {
               return ListView.builder(
                 itemCount: userMap.length,
                 itemBuilder: (context, index) {
-                  final currentUserId = auth.currentUser?.displayName;
+                  final currentUserId = auth.currentUser?.uid;
                   final otherUserId = userMap.keys.elementAt(index);
                   final otherUserData = userMap[otherUserId];
 
@@ -55,15 +55,10 @@ class _AllChatsState extends State<AllChats> {
                   } else {
                     final chatRoomId = context
                         .read<ChatProvider>()
-                        .chatRoomId(currentUserId, otherUserId);
+                        .chatRoomId(currentUserId, otherUserData["uid"]);
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 5),
                       onTap: () {
-                        createMyChatsCollection(
-                            otherUserId,
-                            otherUserData["name"],
-                            otherUserData["status"],
-                            otherUserData["uid"]);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
