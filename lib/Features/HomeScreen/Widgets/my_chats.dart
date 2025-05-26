@@ -147,7 +147,10 @@ class _MyChatsState extends State<MyChats> {
                               fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
-                          lastMsg,
+                          otherUserData['senderOfLastMessage '] ==
+                                  auth.currentUser!.uid
+                              ? "You: $lastMsg"
+                              : lastMsg,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.publicSans(
