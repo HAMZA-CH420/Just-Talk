@@ -72,18 +72,4 @@ class _MessageInputState extends State<MessageInput> {
       ],
     );
   }
-
-  //method to send message in our collection
-  Future<void> onSendMessage() async {
-    Map<String, dynamic> message = {
-      "sentBy": auth.currentUser?.displayName,
-      "time": DateTime.now(),
-      "message": controller.text.toString(),
-    };
-    await fireStore
-        .collection("chatRoom")
-        .doc(widget.chatRoomId)
-        .collection("chats")
-        .add(message);
-  }
 }

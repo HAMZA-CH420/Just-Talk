@@ -47,6 +47,7 @@ class _ChatroomState extends State<Chatroom> {
                         .collection("chatRoom")
                         .doc(widget.chatRoomId)
                         .collection("messages")
+                        .orderBy("timeStamp", descending: false)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
