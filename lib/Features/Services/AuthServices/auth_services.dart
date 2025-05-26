@@ -34,7 +34,6 @@ class AuthServices {
         "uid": firebaseAuth.currentUser?.uid,
         "about": "Hey there! i am using JustTalk",
         "email": email,
-        "lastMsg": "",
         "time": FieldValue.serverTimestamp(),
       });
       return showToast("User Created Successfully", Colors.green);

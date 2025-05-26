@@ -33,4 +33,31 @@ class ChatProvider with ChangeNotifier {
       debugPrint(e.toString());
     }
   }
+
+  //send message method
+  Future<void> sendMessage({
+    required String currentUserId,
+    required String otherUserId,
+    required String msgText,
+    required String chatRoomId,
+  }) async {
+    if (msgText.trim().isEmpty) return;
+    try {
+      DocumentReference messageDocRef = fireStore
+          .collection("chatRoom")
+          .doc(chatRoomId)
+          .collection('messages')
+          .doc();
+      await messageDocRef.set({
+        "senderId": currentUserId,
+        "receiverId": otherUserId,
+        "msgText": msgText,
+        "isRead": false,
+        "timeStamp": FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      debugPrint(
+          "Error sending message or updating last message: ${e.message}");
+    }
+  }
 }

@@ -82,6 +82,7 @@ class _MyChatsState extends State<MyChats> {
                     builder: (context,
                         AsyncSnapshot<DocumentSnapshot> statusSnapshot) {
                       String status = "offline";
+                      String lastMsg = "How you doing";
                       if (statusSnapshot.connectionState ==
                               ConnectionState.active &&
                           statusSnapshot.data!.exists &&
@@ -90,6 +91,8 @@ class _MyChatsState extends State<MyChats> {
                             statusSnapshot.data!.data() as Map<String, dynamic>;
                         status =
                             otherUserMainData['status'] as String? ?? "offline";
+                        lastMsg = otherUserMainData["lastMsg"] as String ??
+                            "No message";
                       }
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
@@ -122,7 +125,7 @@ class _MyChatsState extends State<MyChats> {
                               fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
-                          "How you doing?",
+                          lastMsg,
                           style: GoogleFonts.publicSans(
                               fontSize: 15,
                               color: Colors.grey,
