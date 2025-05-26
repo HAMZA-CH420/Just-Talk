@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
+import 'package:provider/provider.dart';
 
 class MessageInput extends StatefulWidget {
-  const MessageInput({super.key, required this.chatRoomId});
+  const MessageInput(
+      {super.key, required this.chatRoomId, required this.otherUserId});
   final String chatRoomId;
+  final String otherUserId;
 
   @override
   State<MessageInput> createState() => _MessageInputState();
@@ -49,11 +53,12 @@ class _MessageInputState extends State<MessageInput> {
         ),
         GestureDetector(
           onTap: () {
-            if (controller.text.isEmpty) {
-            } else {
-              onSendMessage();
-              controller.clear();
-            }
+            context.read<ChatProvider>().sendMessage(
+                currentUserId: auth.currentUser!.uid,
+                otherUserId: widget.otherUserId,
+                msgText: controller.text,
+                chatRoomId: widget.chatRoomId);
+            controller.clear();
           },
           child: CircleAvatar(
             radius: 24,

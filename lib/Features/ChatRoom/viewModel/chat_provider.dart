@@ -51,13 +51,54 @@ class ChatProvider with ChangeNotifier {
       await messageDocRef.set({
         "senderId": currentUserId,
         "receiverId": otherUserId,
-        "msgText": msgText,
+        "msg": msgText,
         "isRead": false,
         "timeStamp": FieldValue.serverTimestamp(),
       });
+      //update for currentUser
+      await _updateMessageForUser(
+          currentUserId: currentUserId,
+          otherUserId: otherUserId,
+          lastMessage: msgText,
+          senderOfLastMessage: currentUserId);
+      //update for otherUser
+      await _updateMessageForUser(
+          currentUserId: currentUserId,
+          otherUserId: otherUserId,
+          lastMessage: msgText,
+          senderOfLastMessage: otherUserId);
     } on FirebaseException catch (e) {
       debugPrint(
           "Error sending message or updating last message: ${e.message}");
+    }
+  }
+
+  //update Last message for both users
+  Future<void> _updateMessageForUser({
+    required String currentUserId,
+    required String otherUserId,
+    required String lastMessage,
+    required String senderOfLastMessage,
+  }) async {
+    try {
+      DocumentReference chatEntryRef = fireStore
+          .collection("userChats")
+          .doc(currentUserId)
+          .collection('chats')
+          .doc(otherUserId);
+      Map<String, dynamic> updateData = {
+        'lastMessage': lastMessage.length > 50
+            ? '${lastMessage.substring(0, 47)}...'
+            : lastMessage,
+        'senderOfLastMessage': senderOfLastMessage,
+        'lastMessageTimeStamp': FieldValue.serverTimestamp(),
+        'unReadCount':
+            FieldValue.increment(currentUserId == senderOfLastMessage ? 0 : 1),
+      };
+
+      await chatEntryRef.set(updateData, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      debugPrint("error updating last message for both users: ${e.message}");
     }
   }
 }

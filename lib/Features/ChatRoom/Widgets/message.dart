@@ -10,7 +10,7 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: map["sentBy"] == auth.currentUser!.displayName
+      alignment: map["senderId"] == auth.currentUser!.uid
           ? Alignment.centerRight
           : Alignment.centerLeft,
       child: Container(
@@ -20,22 +20,22 @@ class Message extends StatelessWidget {
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
-            bottomLeft: map["sentBy"] == auth.currentUser!.displayName
+            bottomLeft: map["senderId"] == auth.currentUser!.uid
                 ? Radius.circular(15)
                 : Radius.circular(0),
-            bottomRight: map["sentBy"] == auth.currentUser!.displayName
+            bottomRight: map["senderId"] == auth.currentUser!.uid
                 ? Radius.circular(0)
                 : Radius.circular(15),
           ),
-          color: map["sentBy"] == auth.currentUser!.displayName
+          color: map["senderId"] == auth.currentUser!.uid
               ? Colors.white
               : Palette.primaryColor,
         ),
         child: Text(
-          map["message"],
+          map["msg"],
           style: GoogleFonts.publicSans(
               fontSize: 16,
-              color: map["sentBy"] == auth.currentUser!.displayName
+              color: map["senderId"] == auth.currentUser!.uid
                   ? Palette.primaryColor
                   : Colors.white),
         ),

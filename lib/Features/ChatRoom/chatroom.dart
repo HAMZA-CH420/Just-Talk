@@ -14,10 +14,10 @@ class Chatroom extends StatefulWidget {
     required this.chatRoomId,
     required this.name,
     required this.status,
-    required this.userId,
+    required this.otherUserId,
   });
   final String chatRoomId;
-  final String name, status, userId;
+  final String name, status, otherUserId;
 
   @override
   State<Chatroom> createState() => _ChatroomState();
@@ -34,7 +34,7 @@ class _ChatroomState extends State<Chatroom> {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: Scaffold(
-        appBar: appBar(widget.name, widget.status, widget.userId),
+        appBar: appBar(widget.name, widget.status, widget.otherUserId),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -46,8 +46,7 @@ class _ChatroomState extends State<Chatroom> {
                     stream: fireStore
                         .collection("chatRoom")
                         .doc(widget.chatRoomId)
-                        .collection("chats")
-                        .orderBy("time", descending: false)
+                        .collection("messages")
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -87,6 +86,7 @@ class _ChatroomState extends State<Chatroom> {
                 ),
                 MessageInput(
                   chatRoomId: widget.chatRoomId,
+                  otherUserId: widget.otherUserId,
                 ),
               ],
             ),
@@ -96,7 +96,7 @@ class _ChatroomState extends State<Chatroom> {
     );
   }
 
-  PreferredSizeWidget appBar(String name, String status, String userId) {
+  PreferredSizeWidget appBar(String name, String status, String otherUserId) {
     return AppBar(
       leadingWidth: 20,
       scrolledUnderElevation: 0.0,
@@ -119,7 +119,7 @@ class _ChatroomState extends State<Chatroom> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileScreen(userId: userId),
+                    builder: (context) => ProfileScreen(userId: otherUserId),
                   ));
             },
             child: Column(

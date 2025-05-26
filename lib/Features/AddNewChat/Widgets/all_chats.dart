@@ -70,7 +70,7 @@ class _AllChatsState extends State<AllChats> {
                                 chatRoomId: chatRoomId,
                                 name: otherUserData["name"],
                                 status: otherUserData["status"],
-                                userId: otherUserData["name"],
+                                otherUserId: otherUserData["uid"],
                               ),
                             ));
                       },

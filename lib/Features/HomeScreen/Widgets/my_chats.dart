@@ -28,6 +28,7 @@ class _MyChatsState extends State<MyChats> {
         .collection("userChats")
         .doc(auth.currentUser!.uid)
         .collection("chats")
+        .orderBy("lastMessageTimeStamp", descending: true)
         .snapshots();
   }
 
@@ -46,18 +47,21 @@ class _MyChatsState extends State<MyChats> {
           }
           if (snapshot.data!.docs.isEmpty || !snapshot.hasData) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 10,
-                children: [
-                  SizedBox(
-                    child: SvgPicture.asset("assets/images/no_chats.svg"),
-                  ),
-                  Text(
-                    "No chats here! Click to refresh",
-                    style: GoogleFonts.publicSans(fontSize: 15),
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: handleRefresh,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    SizedBox(
+                      child: SvgPicture.asset("assets/images/no_chats.svg"),
+                    ),
+                    Text(
+                      "No chats here! Click to refresh",
+                      style: GoogleFonts.publicSans(fontSize: 15),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
@@ -82,7 +86,6 @@ class _MyChatsState extends State<MyChats> {
                     builder: (context,
                         AsyncSnapshot<DocumentSnapshot> statusSnapshot) {
                       String status = "offline";
-                      String lastMsg = "How you doing";
                       if (statusSnapshot.connectionState ==
                               ConnectionState.active &&
                           statusSnapshot.data!.exists &&
@@ -91,9 +94,9 @@ class _MyChatsState extends State<MyChats> {
                             statusSnapshot.data!.data() as Map<String, dynamic>;
                         status =
                             otherUserMainData['status'] as String? ?? "offline";
-                        lastMsg = otherUserMainData["lastMsg"] as String ??
-                            "No message";
                       }
+                      final lastMsg =
+                          otherUserData['lastMessage'] ?? "No messages";
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 2, horizontal: 15),
@@ -105,7 +108,7 @@ class _MyChatsState extends State<MyChats> {
                                   chatRoomId: chatRoomId,
                                   name: otherUserData["name"],
                                   status: status,
-                                  userId: otherUserId,
+                                  otherUserId: otherUserData['uid'],
                                 ),
                               ));
                         },
