@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:just_talk/Features/ChatRoom/chatroom.dart';
 import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
@@ -99,6 +100,13 @@ class _MyChatsState extends State<MyChats> {
                           "No messages";
                       final int unReadMsg =
                           otherUserData['unReadCount'] as int? ?? 0;
+                      Timestamp? serverStoredTimeStamp =
+                          otherUserData["lastMessageTimeStamp"] as Timestamp?;
+                      String displayTime = '';
+                      if (serverStoredTimeStamp != null) {
+                        DateTime dateTime = serverStoredTimeStamp.toDate();
+                        displayTime = DateFormat('hh:mm').format(dateTime);
+                      }
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 2, horizontal: 15),
@@ -152,7 +160,7 @@ class _MyChatsState extends State<MyChats> {
                           spacing: 8,
                           children: [
                             Text(
-                              status == "online" ? "online" : "12:05",
+                              status == "online" ? "online" : displayTime,
                               style: TextStyle(
                                   fontSize: 13,
                                   color: status == "online"

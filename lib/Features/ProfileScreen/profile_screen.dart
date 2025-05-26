@@ -157,6 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //show alert dialog
   _showAlertDialog(BuildContext context) async {
     return await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
