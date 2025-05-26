@@ -95,8 +95,10 @@ class _MyChatsState extends State<MyChats> {
                         status =
                             otherUserMainData['status'] as String? ?? "offline";
                       }
-                      final lastMsg =
-                          otherUserData['lastMessage'] ?? "No messages";
+                      final lastMsg = otherUserData['lastMessage'] as String? ??
+                          "No messages";
+                      final int unReadMsg =
+                          otherUserData['unReadCount'] as int? ?? 0;
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 2, horizontal: 15),
@@ -112,14 +114,23 @@ class _MyChatsState extends State<MyChats> {
                                 ),
                               ));
                         },
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Palette.primaryColor,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
+                        leading: Stack(children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Palette.primaryColor,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
+                          status == "online"
+                              ? Positioned(
+                                  child: CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: Colors.green,
+                                ))
+                              : SizedBox(),
+                        ]),
                         title: Text(
                           otherUserData["name"],
                           style: GoogleFonts.publicSans(
@@ -129,19 +140,37 @@ class _MyChatsState extends State<MyChats> {
                         ),
                         subtitle: Text(
                           lastMsg,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.publicSans(
-                              fontSize: 15,
+                              fontSize: 16,
                               color: Colors.grey,
                               fontWeight: FontWeight.w600),
                         ),
-                        trailing: Text(
-                          status,
-                          style: GoogleFonts.publicSans(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                status == "online" ? Colors.green : Colors.grey,
-                          ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 8,
+                          children: [
+                            Text(
+                              status == "online" ? "online" : "12:05",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: status == "online"
+                                      ? Colors.green
+                                      : Colors.grey),
+                            ),
+                            unReadMsg > 0
+                                ? CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Palette.primaryColor,
+                                    child: Text(
+                                      "$unReadMsg",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
                       );
                     },

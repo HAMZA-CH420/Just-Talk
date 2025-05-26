@@ -60,9 +60,9 @@ class _AllChatsState extends State<AllChats> {
                       contentPadding: const EdgeInsets.symmetric(vertical: 5),
                       onTap: () {
                         createMyChatsCollection(
-                            otherUserDocId: otherUserData["uid"],
-                            name: otherUserData["name"],
-                            uid: otherUserData["uid"]);
+                          otherUserDocId: otherUserData["uid"],
+                          name: otherUserData["name"],
+                        );
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -121,7 +121,6 @@ class _AllChatsState extends State<AllChats> {
   Future<void> createMyChatsCollection({
     required String otherUserDocId,
     required String name,
-    required String uid,
   }) async {
     String? currentUserDisplayName = auth.currentUser?.displayName;
     if (currentUserDisplayName == null) {
@@ -143,8 +142,7 @@ class _AllChatsState extends State<AllChats> {
         .doc(otherUserDocId)
         .set({
       "name": name,
-      "uid": uid,
-      "lastMessage": "",
+      "uid": otherUserDocId,
       "timestamp": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }

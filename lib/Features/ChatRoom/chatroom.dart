@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message.dart';
 import 'package:just_talk/Features/ChatRoom/Widgets/message_input.dart';
+import 'package:just_talk/Features/ChatRoom/viewModel/chat_provider.dart';
 import 'package:just_talk/Features/ProfileScreen/profile_screen.dart';
 import 'package:just_talk/UiHelpers/Utils/Color_Palette/color_palette.dart';
+import 'package:provider/provider.dart';
 
 class Chatroom extends StatefulWidget {
   const Chatroom({
@@ -23,9 +26,28 @@ class Chatroom extends StatefulWidget {
   State<Chatroom> createState() => _ChatroomState();
 }
 
-class _ChatroomState extends State<Chatroom> {
+class _ChatroomState extends State<Chatroom> with WidgetsBindingObserver {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _markAsRead();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _markAsRead();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,5 +176,15 @@ class _ChatroomState extends State<Chatroom> {
         ),
       ],
     );
+  }
+
+  _markAsRead() {
+    if (mounted) {
+      context.read<ChatProvider>().markMessagesAsReadAndResetUnreadCount(
+          chatRoomId: widget.chatRoomId,
+          currentUserId: FirebaseAuth.instance.currentUser!.uid,
+          otherUserId: widget.otherUserId);
+    }
+    print("im called!!");
   }
 }
