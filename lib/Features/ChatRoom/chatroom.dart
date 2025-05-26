@@ -185,6 +185,5 @@ class _ChatroomState extends State<Chatroom> with WidgetsBindingObserver {
           currentUserId: FirebaseAuth.instance.currentUser!.uid,
           otherUserId: widget.otherUserId);
     }
-    print("im called!!");
   }
 }
