@@ -16,7 +16,7 @@ class MyChats extends StatefulWidget {
   State<MyChats> createState() => _MyChatsState();
 }
 
-class _MyChatsState extends State<MyChats>  {
+class _MyChatsState extends State<MyChats> {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   late Stream<QuerySnapshot> _streamData;
@@ -33,112 +33,117 @@ class _MyChatsState extends State<MyChats>  {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _streamData,
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return waitingIndicator();
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Error loading chats."));
-        }
-        if (snapshot.data!.docs.isEmpty || !snapshot.hasData) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 10,
-              children: [
-                SizedBox(
-                  child: SvgPicture.asset("assets/images/no_chats.svg"),
-                ),
-                Text(
-                  "No chats here! Click to refresh",
-                  style: GoogleFonts.publicSans(fontSize: 15),
-                ),
-              ],
-            ),
-          );
-        } else {
-          final myChats = snapshot.data!.docs;
-          return ListView.builder(
-              itemCount: myChats.length,
-              itemBuilder: (context, index) {
-                final currentUserId = auth.currentUser?.uid;
-                final otherUserId = myChats[index].id;
-                final otherUserData =
-                    myChats[index].data() as Map<String, dynamic>;
-                if (currentUserId == null) return SizedBox.shrink();
-                final chatRoomId = context
-                    .read<ChatProvider>()
-                    .chatRoomId(currentUserId, otherUserId);
+    return RefreshIndicator(
+      onRefresh: handleRefresh,
+      color: Palette.primaryColor,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _streamData,
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return waitingIndicator();
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error loading chats."));
+          }
+          if (snapshot.data!.docs.isEmpty || !snapshot.hasData) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  SizedBox(
+                    child: SvgPicture.asset("assets/images/no_chats.svg"),
+                  ),
+                  Text(
+                    "No chats here! Click to refresh",
+                    style: GoogleFonts.publicSans(fontSize: 15),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            final myChats = snapshot.data!.docs;
+            return ListView.builder(
+                itemCount: myChats.length,
+                itemBuilder: (context, index) {
+                  final currentUserId = auth.currentUser?.uid;
+                  final otherUserId = myChats[index].id;
+                  final otherUserData =
+                      myChats[index].data() as Map<String, dynamic>;
+                  if (currentUserId == null) return SizedBox.shrink();
+                  final chatRoomId = context
+                      .read<ChatProvider>()
+                      .chatRoomId(currentUserId, otherUserId);
 
-                return StreamBuilder<DocumentSnapshot>(
-                  stream: fireStore
-                      .collection("users")
-                      .doc(otherUserId)
-                      .snapshots(),
-                  builder: (context,
-                      AsyncSnapshot<DocumentSnapshot> statusSnapshot) {
-                    String status = "offline";
-                    if (statusSnapshot.connectionState ==
-                            ConnectionState.active &&
-                        statusSnapshot.data!.exists &&
-                        statusSnapshot.hasData) {
-                      final otherUserMainData =
-                          statusSnapshot.data!.data() as Map<String, dynamic>;
-                      status = otherUserMainData['status'] as String? ?? "offline";
-                    }
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 15),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Chatroom(
-                                chatRoomId: chatRoomId,
-                                name: otherUserData["name"],
-                                status: status,
-                                userId: otherUserId,
-                              ),
-                            ));
-                      },
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Palette.primaryColor,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
+                  return StreamBuilder<DocumentSnapshot>(
+                    stream: fireStore
+                        .collection("users")
+                        .doc(otherUserId)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<DocumentSnapshot> statusSnapshot) {
+                      String status = "offline";
+                      if (statusSnapshot.connectionState ==
+                              ConnectionState.active &&
+                          statusSnapshot.data!.exists &&
+                          statusSnapshot.hasData) {
+                        final otherUserMainData =
+                            statusSnapshot.data!.data() as Map<String, dynamic>;
+                        status =
+                            otherUserMainData['status'] as String? ?? "offline";
+                      }
+                      return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 15),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Chatroom(
+                                  chatRoomId: chatRoomId,
+                                  name: otherUserData["name"],
+                                  status: status,
+                                  userId: otherUserId,
+                                ),
+                              ));
+                        },
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Palette.primaryColor,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      title: Text(
-                        otherUserData["name"],
-                        style: GoogleFonts.publicSans(
-                            fontSize: 18,
-                            color: Palette.primaryColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      subtitle: Text(
-                        "How you doing?",
-                        style: GoogleFonts.publicSans(
-                            fontSize: 15,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      trailing: Text(
-                        status,
-                        style: GoogleFonts.publicSans(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color:
-                              status == "online" ? Colors.green : Colors.grey,
+                        title: Text(
+                          otherUserData["name"],
+                          style: GoogleFonts.publicSans(
+                              fontSize: 18,
+                              color: Palette.primaryColor,
+                              fontWeight: FontWeight.w600),
                         ),
-                      ),
-                    );
-                  },
-                );
-              });
-        }
-      },
+                        subtitle: Text(
+                          "How you doing?",
+                          style: GoogleFonts.publicSans(
+                              fontSize: 15,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        trailing: Text(
+                          status,
+                          style: GoogleFonts.publicSans(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                status == "online" ? Colors.green : Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                });
+          }
+        },
+      ),
     );
   }
 
@@ -168,5 +173,15 @@ class _MyChatsState extends State<MyChats>  {
         );
       },
     );
+  }
+
+  Future<void> handleRefresh() async {
+    setState(() {
+      _streamData = fireStore
+          .collection("userChats")
+          .doc(auth.currentUser!.uid)
+          .collection("chats")
+          .snapshots();
+    });
   }
 }
