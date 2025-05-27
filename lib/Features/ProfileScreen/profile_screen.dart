@@ -154,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  //show alert dialog
+  //show alert dialog for logout
   _showAlertDialog(BuildContext context) async {
     return await showDialog(
       barrierDismissible: false,
