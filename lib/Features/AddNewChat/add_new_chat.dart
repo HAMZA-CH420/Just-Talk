@@ -14,7 +14,9 @@ class AddNewChat extends StatelessWidget {
           child: Column(
             spacing: 20,
             children: [
-              CustomSearchBar(),
+              CustomSearchBar(
+                onChanged: (p0) {},
+              ),
               Expanded(child: AllChats()),
             ],
           ),
