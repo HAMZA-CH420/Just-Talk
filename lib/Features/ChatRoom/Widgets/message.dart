@@ -16,6 +16,8 @@ class Message extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 14),
         margin: const EdgeInsets.symmetric(vertical: 5),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width / 1.8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
