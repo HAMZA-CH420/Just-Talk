@@ -111,7 +111,7 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-//method to mark message read
+//method to mark messages read
   Future<void> markMessagesAsReadAndResetUnreadCount({
     required String chatRoomId,
     required String currentUserId,
