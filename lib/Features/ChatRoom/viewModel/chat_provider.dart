@@ -97,8 +97,6 @@ class ChatProvider with ChangeNotifier {
             : lastMessage,
         'senderOfLastMessage': senderOfLastMessage,
         'lastMessageTimeStamp': FieldValue.serverTimestamp(),
-        'unReadCount':
-            FieldValue.increment(currentUserId == senderOfLastMessage ? 0 : 1),
       };
 
       if (incrementUnreadCount) {
