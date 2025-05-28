@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  String searchQuery = '';
+  Timer? debounce;
   @override
   void initState() {
     super.initState();
@@ -104,12 +108,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           child: Column(
             spacing: 10,
             children: [
-              CustomSearchBar(),
-              Expanded(child: MyChats()),
+              CustomSearchBar(
+                onChanged: _handleSearchChanged,
+              ),
+              Expanded(
+                  child: MyChats(
+                searchQuery: searchQuery,
+              )),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  //method to handle search changed
+
+  void _handleSearchChanged(String query) {
+    if (debounce?.isActive ?? false) debounce?.cancel();
+    debounce = Timer(
+      Duration(milliseconds: 300),
+      () {
+        if (mounted) {
+          setState(() {
+            searchQuery = query.toLowerCase();
+          });
+        }
+      },
     );
   }
 }

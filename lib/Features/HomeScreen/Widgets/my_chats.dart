@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MyChats extends StatefulWidget {
-  const MyChats({super.key});
-
+  const MyChats({super.key, required this.searchQuery});
+  final String searchQuery;
   @override
   State<MyChats> createState() => _MyChatsState();
 }
@@ -66,7 +66,27 @@ class _MyChatsState extends State<MyChats> {
               ),
             );
           } else {
-            final myChats = snapshot.data!.docs;
+            var myChats = snapshot.data!.docs;
+            //search Logic
+            if (widget.searchQuery.isNotEmpty) {
+              myChats = myChats.where(
+                (chatDoc) {
+                  final chatData = chatDoc.data() as Map<String, dynamic>;
+                  final chatName = chatData['name'] as String? ?? "";
+                  return chatName.toLowerCase().contains(widget.searchQuery);
+                },
+              ).toList();
+            }
+
+            if (myChats.isEmpty && widget.searchQuery.isNotEmpty) {
+              return Center(
+                child: Text(
+                  "No chats found!",
+                  style: GoogleFonts.publicSans(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
             return ListView.builder(
                 itemCount: myChats.length,
                 itemBuilder: (context, index) {
