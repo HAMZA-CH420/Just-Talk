@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AllChats extends StatefulWidget {
-  const AllChats({super.key});
-
+  const AllChats({super.key, required this.searchQuery});
+  final String searchQuery;
   @override
   State<AllChats> createState() => _AllChatsState();
 }
@@ -18,18 +18,17 @@ class AllChats extends StatefulWidget {
 class _AllChatsState extends State<AllChats> {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
-  late Map<String, dynamic> userMap;
-  late Future<void> _fetchUsersFuture;
+  late Stream<QuerySnapshot> _streamFuture;
   @override
   void initState() {
     super.initState();
-    _fetchUsersFuture = fetchUsers();
+    _streamFuture = fireStore.collection("users").snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchUsersFuture,
+    return StreamBuilder(
+      stream: _streamFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return waitingIndicator();
@@ -38,84 +37,92 @@ class _AllChatsState extends State<AllChats> {
             child: Text("Unknown Error"),
           );
         }
+        var userMap = snapshot.data!.docs;
         if (userMap.isEmpty) {
           return Center(child: Text("No User Found"));
-        } else {
-          return Consumer<ChatProvider>(
-            builder: (context, value, child) {
-              return ListView.builder(
-                itemCount: userMap.length,
-                itemBuilder: (context, index) {
-                  final currentUserId = auth.currentUser?.uid;
-                  final otherUserId = userMap.keys.elementAt(index);
-                  final otherUserData = userMap[otherUserId];
-
-                  if (currentUserId == otherUserData["uid"]) {
-                    return SizedBox.shrink();
-                  } else {
-                    final chatRoomId = context
-                        .read<ChatProvider>()
-                        .chatRoomId(currentUserId, otherUserData["uid"]);
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 5),
-                      onTap: () {
-                        createMyChatsCollection(
-                          otherUserDocId: otherUserData["uid"],
-                          name: otherUserData["name"],
-                        );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Chatroom(
-                                chatRoomId: chatRoomId,
-                                name: otherUserData["name"],
-                                status: otherUserData["status"],
-                                otherUserId: otherUserData["uid"],
-                              ),
-                            ));
-                      },
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Palette.primaryColor,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Text(
-                        otherUserData["name"],
-                        style: GoogleFonts.publicSans(
-                            fontSize: 18,
-                            color: Palette.primaryColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      trailing: Text(
-                        otherUserData["status"],
-                        style: GoogleFonts.publicSans(
-                            fontSize: 13, fontWeight: FontWeight.w500),
-                      ),
-                    );
-                  }
-                },
-              );
+        }
+        //search Logic
+        if (widget.searchQuery.isNotEmpty) {
+          userMap = userMap.where(
+            (chatDoc) {
+              final chatData = chatDoc.data() as Map<String, dynamic>;
+              final chatName = chatData['name'] as String? ?? "";
+              return chatName.toLowerCase().contains(widget.searchQuery);
             },
+          ).toList();
+        }
+
+        if (userMap.isEmpty && widget.searchQuery.isNotEmpty) {
+          return Center(
+            child: Text(
+              "No user found!",
+              style: GoogleFonts.publicSans(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
           );
         }
+        return Consumer<ChatProvider>(
+          builder: (context, value, child) {
+            return ListView.builder(
+              itemCount: userMap.length,
+              itemBuilder: (context, index) {
+                final currentUserId = auth.currentUser?.uid;
+                final otherUserId = userMap[index].id;
+                final otherUserData =
+                    userMap[index].data() as Map<String, dynamic>;
+
+                if (currentUserId == otherUserId) {
+                  return SizedBox.shrink();
+                } else {
+                  final chatRoomId = context
+                      .read<ChatProvider>()
+                      .chatRoomId(currentUserId, otherUserId);
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                    onTap: () {
+                      createMyChatsCollection(
+                        otherUserDocId: otherUserId,
+                        name: otherUserData["name"],
+                      );
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Chatroom(
+                              chatRoomId: chatRoomId,
+                              name: otherUserData["name"],
+                              status: otherUserData["status"],
+                              otherUserId: otherUserId,
+                            ),
+                          ));
+                    },
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Palette.primaryColor,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                    ),
+                    title: Text(
+                      otherUserData["name"],
+                      style: GoogleFonts.publicSans(
+                          fontSize: 18,
+                          color: Palette.primaryColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    trailing: Text(
+                      otherUserData["status"],
+                      style: GoogleFonts.publicSans(
+                          fontSize: 13, fontWeight: FontWeight.w500),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        );
       },
     );
-  }
-
-  /// Method to fetch all users from DB
-  Future fetchUsers() async {
-    try {
-      QuerySnapshot querySnapshot = await fireStore.collection("users").get();
-
-      userMap = Map.fromEntries(querySnapshot.docs.map(
-        (doc) => MapEntry(doc.id, doc.data()),
-      ));
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 
   Future<void> createMyChatsCollection({
