@@ -36,6 +36,7 @@ class NotificationServices {
     if (token != null && _auth.currentUser != null) {
       await saveTokenToDataBase(token);
     }
+    _firebaseMessaging.onTokenRefresh.listen(saveTokenToDataBase);
   }
 
   //method to add token in firebase collection
