@@ -7,6 +7,8 @@ class NotificationServices {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
+  //check for potential permission
   Future<void> notificationSettings() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -24,6 +26,41 @@ class NotificationServices {
       debugPrint("User granted provisional permission");
     } else {
       debugPrint("Permission denied by user");
+    }
+  }
+
+  //initialize messaging
+  Future<void> initNotifications() async {
+    final String? token = await _firebaseMessaging.getToken();
+    debugPrint("fcm:$token");
+    if (token != null && _auth.currentUser != null) {
+      await saveTokenToDataBase(token);
+    }
+  }
+
+  //method to add token in firebase collection
+  Future<void> saveTokenToDataBase(String token) async {
+    final userId = _auth.currentUser!.uid;
+    try {
+      await _fireStore.collection('users').doc(userId).update({
+        'fcmToken': FieldValue.arrayUnion([token]),
+        'lastTokenUpdate': FieldValue.serverTimestamp()
+      });
+    } catch (e) {
+      debugPrint("error while adding fcm token $e");
+    }
+  }
+
+  //method to remove token from firebase collection
+  Future<void> removeTokenFromDatabase() async {
+    final userId = _auth.currentUser!.uid;
+    final String? token = await _firebaseMessaging.getToken();
+    try {
+      await _fireStore.collection('users').doc(userId).update({
+        'fcmToken': FieldValue.arrayRemove([token]),
+      });
+    } catch (e) {
+      debugPrint("error while removing fcm token $e");
     }
   }
 }
