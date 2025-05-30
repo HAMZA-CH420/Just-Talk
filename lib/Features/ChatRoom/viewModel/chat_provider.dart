@@ -56,59 +56,41 @@ class ChatProvider with ChangeNotifier {
         "isRead": false,
         "timeStamp": FieldValue.serverTimestamp(),
       });
-      //update for currentUser
-      await _updateMessageForUser(
-        currentUserId: currentUserId,
-        otherUserId: otherUserId,
-        lastMessage: msgText,
-        senderOfLastMessage: currentUserId,
-        incrementUnreadCount: false,
-      );
+      //update myChatList for sender
+      DocumentReference senderChatListRef = fireStore
+          .collection("userChats")
+          .doc(currentUserId)
+          .collection("chats")
+          .doc(otherUserId);
+      await senderChatListRef.set({
+        "lastMessage":
+            msgText.length > 50 ? '${msgText.substring(0, 47)}...' : msgText,
+        "lastMessageTimeStamp": FieldValue.serverTimestamp(),
+        'senderOfLastMessage': currentUserId,
+        "name": otherUserName,
+        "uid": otherUserId,
+        'unReadCount': 0,
+      }, SetOptions(merge: true));
 
-      //update for otherUser
-      await _updateMessageForUser(
-          currentUserId: otherUserId,
-          otherUserId: currentUserId,
-          lastMessage: msgText,
-          senderOfLastMessage: currentUserId,
-          incrementUnreadCount: true);
+      //update myChats List for receiver
+      DocumentReference receiverChatListRef = fireStore
+          .collection("userChats")
+          .doc(otherUserId)
+          .collection("chats")
+          .doc(currentUserId);
+
+      await receiverChatListRef.set({
+        "lastMessage":
+            msgText.length > 50 ? '${msgText.substring(0, 47)}...' : msgText,
+        "lastMessageTimeStamp": FieldValue.serverTimestamp(),
+        'senderOfLastMessage': currentUserId,
+        "name": auth.currentUser!.displayName,
+        "uid": currentUserId,
+        'unReadCount': FieldValue.increment(1),
+      });
     } on FirebaseException catch (e) {
       debugPrint(
           "Error sending message or updating last message: ${e.message}");
-    }
-  }
-
-  //update Last message for both users
-  Future<void> _updateMessageForUser({
-    required String currentUserId,
-    required String otherUserId,
-    required String lastMessage,
-    required String senderOfLastMessage,
-    required bool incrementUnreadCount,
-  }) async {
-    try {
-      DocumentReference chatEntryRef = fireStore
-          .collection("userChats")
-          .doc(currentUserId)
-          .collection('chats')
-          .doc(otherUserId);
-      Map<String, dynamic> updateData = {
-        'lastMessage': lastMessage.length > 50
-            ? '${lastMessage.substring(0, 47)}...'
-            : lastMessage,
-        'senderOfLastMessage': senderOfLastMessage,
-        'lastMessageTimeStamp': FieldValue.serverTimestamp(),
-      };
-
-      if (incrementUnreadCount) {
-        updateData['unReadCount'] = FieldValue.increment(1);
-      } else {
-        updateData['unReadCount'] = 0;
-      }
-
-      await chatEntryRef.set(updateData, SetOptions(merge: true));
-    } on FirebaseException catch (e) {
-      debugPrint("error updating last message for both users: ${e.message}");
     }
   }
 
@@ -123,18 +105,31 @@ class ChatProvider with ChangeNotifier {
         .doc(chatRoomId)
         .collection("messages")
         .where("senderId", isEqualTo: otherUserId)
+        .where("receiverId", isEqualTo: currentUserId)
         .where("isRead", isEqualTo: false)
         .get();
-    WriteBatch batch = fireStore.batch();
-    for (DocumentSnapshot doc in messageToUpdate.docs) {
-      batch.update(doc.reference, {"isRead": true});
+    if (messageToUpdate.docs.isEmpty) {
       DocumentReference currentUserChatEntry = fireStore
           .collection("userChats")
           .doc(currentUserId)
           .collection("chats")
           .doc(otherUserId);
-      batch.update(currentUserChatEntry, {'unReadCount': 0});
-      await batch.commit();
+      await currentUserChatEntry
+          .set({'unReadCount': 0}, SetOptions(merge: true));
+      return;
+    }
+    WriteBatch batch = fireStore.batch();
+    if (messageToUpdate.docs.isNotEmpty) {
+      for (DocumentSnapshot doc in messageToUpdate.docs) {
+        batch.update(doc.reference, {"isRead": true});
+        DocumentReference currentUserChatEntry = fireStore
+            .collection("userChats")
+            .doc(currentUserId)
+            .collection("chats")
+            .doc(otherUserId);
+        batch.update(currentUserChatEntry, {'unReadCount': 0});
+        await batch.commit();
+      }
     }
   }
 }
