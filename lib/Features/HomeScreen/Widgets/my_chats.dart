@@ -58,7 +58,7 @@ class _MyChatsState extends State<MyChats> {
                       child: SvgPicture.asset("assets/images/no_chats.svg"),
                     ),
                     Text(
-                      "No chats here! Click to refresh",
+                      "Start chatting by pressing the button.",
                       style: GoogleFonts.publicSans(fontSize: 15),
                     ),
                   ],

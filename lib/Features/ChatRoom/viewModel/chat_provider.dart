@@ -87,7 +87,7 @@ class ChatProvider with ChangeNotifier {
         "name": auth.currentUser!.displayName,
         "uid": currentUserId,
         'unReadCount': FieldValue.increment(1),
-      });
+      }, SetOptions(merge: true));
     } on FirebaseException catch (e) {
       debugPrint(
           "Error sending message or updating last message: ${e.message}");
