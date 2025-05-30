@@ -167,7 +167,7 @@ class _MyChatsState extends State<MyChats> {
                               fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
-                          otherUserData['senderOfLastMessage '] ==
+                          otherUserData['senderOfLastMessage'] ==
                                   auth.currentUser!.uid
                               ? "You: $lastMsg"
                               : lastMsg,
