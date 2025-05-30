@@ -80,10 +80,6 @@ class _AllChatsState extends State<AllChats> {
                   return ListTile(
                     contentPadding: const EdgeInsets.symmetric(vertical: 5),
                     onTap: () {
-                      createMyChatsCollection(
-                        otherUserDocId: otherUserId,
-                        name: otherUserData["name"],
-                      );
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -123,35 +119,6 @@ class _AllChatsState extends State<AllChats> {
         );
       },
     );
-  }
-
-  Future<void> createMyChatsCollection({
-    required String otherUserDocId,
-    required String name,
-  }) async {
-    String? currentUserDisplayName = auth.currentUser?.displayName;
-    if (currentUserDisplayName == null) {
-      debugPrint(
-          "Error: Current user display name is null. Cannot create chat entry.");
-      return;
-    }
-
-    String? currentUserId = auth.currentUser?.uid;
-    if (currentUserId == null) {
-      debugPrint("Error: Current user UID is null.");
-      return;
-    }
-
-    fireStore
-        .collection("userChats")
-        .doc(currentUserId)
-        .collection("chats")
-        .doc(otherUserDocId)
-        .set({
-      "name": name,
-      "uid": otherUserDocId,
-      "timestamp": FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
   }
 
 //Loading indicator
