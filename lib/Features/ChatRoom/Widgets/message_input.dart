@@ -7,9 +7,13 @@ import 'package:provider/provider.dart';
 
 class MessageInput extends StatefulWidget {
   const MessageInput(
-      {super.key, required this.chatRoomId, required this.otherUserId});
+      {super.key,
+      required this.chatRoomId,
+      required this.otherUserId,
+      required this.otherUserName});
   final String chatRoomId;
   final String otherUserId;
+  final String otherUserName;
 
   @override
   State<MessageInput> createState() => _MessageInputState();
@@ -57,6 +61,7 @@ class _MessageInputState extends State<MessageInput> {
                 currentUserId: auth.currentUser!.uid,
                 otherUserId: widget.otherUserId,
                 msgText: controller.text,
+                otherUserName: widget.otherUserName,
                 chatRoomId: widget.chatRoomId);
             controller.clear();
           },

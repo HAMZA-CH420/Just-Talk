@@ -32,7 +32,7 @@ class AuthServices {
         "name": username,
         "status": "unavailable",
         "uid": firebaseAuth.currentUser?.uid,
-        "about": "Hey there! i am using JustTalk",
+        "about": "Hey there! I am using JustTalk",
         "email": email,
         "time": FieldValue.serverTimestamp(),
       });

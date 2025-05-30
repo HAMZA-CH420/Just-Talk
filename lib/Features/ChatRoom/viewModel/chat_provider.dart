@@ -40,6 +40,7 @@ class ChatProvider with ChangeNotifier {
     required String otherUserId,
     required String msgText,
     required String chatRoomId,
+    required String otherUserName,
   }) async {
     if (msgText.trim().isEmpty) return;
     try {

@@ -110,6 +110,7 @@ class _ChatroomState extends State<Chatroom> with WidgetsBindingObserver {
                 MessageInput(
                   chatRoomId: widget.chatRoomId,
                   otherUserId: widget.otherUserId,
+                  otherUserName: widget.name,
                 ),
               ],
             ),
