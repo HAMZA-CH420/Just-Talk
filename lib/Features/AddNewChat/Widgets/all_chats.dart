@@ -112,7 +112,7 @@ class _AllChatsState extends State<AllChats> {
                           ? '${about.substring(0, 27)}...'
                           : about,
                       style: GoogleFonts.publicSans(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                       ),
