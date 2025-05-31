@@ -70,6 +70,7 @@ class _AllChatsState extends State<AllChats> {
                 final otherUserId = userMap[index].id;
                 final otherUserData =
                     userMap[index].data() as Map<String, dynamic>;
+                final about = otherUserData['about'] as String? ?? "";
 
                 if (currentUserId == otherUserId) {
                   return SizedBox.shrink();
@@ -105,6 +106,16 @@ class _AllChatsState extends State<AllChats> {
                           fontSize: 18,
                           color: Palette.primaryColor,
                           fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      about.length > 30
+                          ? '${about.substring(0, 27)}...'
+                          : about,
+                      style: GoogleFonts.publicSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
+                      ),
                     ),
                     trailing: Text(
                       otherUserData["status"],
