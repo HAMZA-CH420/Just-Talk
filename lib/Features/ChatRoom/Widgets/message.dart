@@ -30,16 +30,16 @@ class Message extends StatelessWidget {
                 : Radius.circular(15),
           ),
           color: map["senderId"] == auth.currentUser!.uid
-              ? Colors.white
-              : Palette.primaryColor,
+              ? Palette.primaryColor
+              : Colors.white,
         ),
         child: Text(
           map["msg"],
           style: GoogleFonts.publicSans(
               fontSize: 16,
               color: map["senderId"] == auth.currentUser!.uid
-                  ? Palette.primaryColor
-                  : Colors.white),
+                  ? Colors.white
+                  : Palette.primaryColor),
         ),
       ),
     );
