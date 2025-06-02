@@ -155,7 +155,7 @@ class _MyChatsState extends State<MyChats> {
                               ? Positioned(
                                   child: CircleAvatar(
                                   radius: 8,
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: Color(0xFF6ADF0A),
                                 ))
                               : SizedBox(),
                         ]),
@@ -187,7 +187,7 @@ class _MyChatsState extends State<MyChats> {
                               style: TextStyle(
                                   fontSize: 13,
                                   color: status == "online"
-                                      ? Colors.green
+                                      ? Color(0xFF6ADF0A)
                                       : Colors.grey),
                             ),
                             unReadMsg > 0
