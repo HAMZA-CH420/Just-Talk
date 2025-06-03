@@ -229,12 +229,18 @@ class _MyChatsState extends State<MyChats> {
             title: Container(
               height: 15,
               width: double.infinity,
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             subtitle: Container(
               width: 100,
               height: 15,
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         );
