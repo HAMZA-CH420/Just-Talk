@@ -213,6 +213,7 @@ class _MyChatsState extends State<MyChats> {
     );
   }
 
+//waiting indicator
   Widget waitingIndicator() {
     return ListView.builder(
       itemCount: 10,
